@@ -21,7 +21,7 @@ Improvements
 - Compatibility with [html5.vim][html5].
 - Support for not-so-common extensions was turned off, e.g., `mssql_*`.
 - Basic support for PHP 5.4 syntax was added.
-- Supported was added for PHP 5.5.7
+- Support was added for PHP 5.5.7
 - New modules added: memcache, memcached, redis and xdebug
 
   [html5]: https://github.com/othree/html5.vim
