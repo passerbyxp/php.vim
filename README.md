@@ -1,11 +1,12 @@
 php.vim
 =======
 
-This project is a fork of [php.vim--Garvin][garvin] which in turn is an update
-of the [php.vim][php-vim] script which in turn is an updated version of the
-php.vim syntax file distributed with Vim. Whew!
+This project is a fork of [php.vim][StanAngeloff] which is an improved version
+of [php.vim--Garvin][garvin] which in turn is an update of the
+[php.vim][php-vim] script which in turn is an updated version of the php.vim
+syntax file distributed with Vim. FUCKIN’ A!
 
-
+  [StanAngeloff]: https://github.com/joshtronic/php.vim
   [garvin]:  https://github.com/vim-scripts/php.vim--Garvin
   [php-vim]: http://www.vim.org/scripts/script.php?script_id=2874
 
@@ -20,7 +21,8 @@ Improvements
 - Compatibility with [html5.vim][html5].
 - Support for not-so-common extensions was turned off, e.g., `mssql_*`.
 - Basic support for PHP 5.4 syntax was added.
-
+- Supported was added for PHP 5.5.7
+- New modules added: memcache, memcached, redis and xdebug
 
   [html5]: https://github.com/othree/html5.vim
 
@@ -32,7 +34,6 @@ A single variable `$allowed_extensions` can be customised to
 [turn on/off][defaults] certain extensions.
 
 When re-generating the syntax file, you must have allowed extensions installed.
-
 
   [defaults]: https://github.com/StanAngeloff/php.vim/blob/master/update_syntax.php#L29-L101
 
