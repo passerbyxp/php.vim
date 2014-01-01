@@ -2,7 +2,8 @@
 " Language: PHP 5.3 & up
 " Maintainer: Paul Garvin <paul@paulgarvin.net>
 " Contributor: Stan Angeloff <stanimir@angeloff.name>
-" URL: https://github.com/StanAngeloff/php.vim
+" Contributor: Joshua Sherman <josh@gravityblvd.com>
+" URL: https://github.com/joshtronic/php.vim
 "
 " Former Maintainer:  Peter Hodge <toomuchphp-vim@yahoo.com>
 " Former URL: http://www.vim.org/scripts/script.php?script_id=1571
@@ -349,7 +350,7 @@ syn keyword phpType class abstract extends interface implements static final var
 syn keyword phpStatement __construct __destruct __call __callStatic __get __set __isset __unset __sleep __wakeup __toString __invoke __set_state __clone contained
 
 " Exception Keywords
-syn keyword phpStatement try catch throw contained
+syn keyword phpStatement try catch finally throw contained
 
 " Language Constructs
 syn keyword phpStatement die exit eval empty isset unset list instanceof insteadof contained
