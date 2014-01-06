@@ -384,6 +384,7 @@ syn match phpMemberSelector "->"  contained display
 syn match phpVarSelector    "\$"  contained display
 " highlight object variables inside strings
 syn match phpMethodsVar     "->\h\w*" contained contains=phpMethods,phpMemberSelector display containedin=phpStringDouble
+syn match phpClasses        "\v[A-Za-z]+(::)@=" contained display
 
 " Identifier
 syn match  phpIdentifier         "$\h\w*"  contained contains=phpSuperglobals,phpVarSelector display
@@ -425,12 +426,13 @@ endif
 
 " Todo
 syn keyword phpTodo todo fixme xxx note contained
+syn match phpCommentSelector "\v\@(return|var|param)" contained
 
 " Comment
 if exists("php_parent_error_open")
-  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,@Spell
+  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell
 else
-  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,@Spell extend
+  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell extend
 endif
 
 syn match phpCommentStar contained "^\s*\*[^/]"me=e-1
@@ -577,6 +579,7 @@ if !exists("did_php_syn_inits")
   hi def link phpStructure        Statement
   hi def link phpOperator         Operator
   hi def link phpVarSelector      Operator
+  hi def link phpCommentSelector  PreProc
   hi def link phpInclude          PreProc
   hi def link phpDefine           PreProc
   hi def link phpKeyword          Keyword
