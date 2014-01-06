@@ -1,7 +1,17 @@
 " Vim syntax file
 " Language: PHP 5.3 & up
+"
 " Maintainer: Paul Garvin <paul@paulgarvin.net>
+"
 " Contributor: Stan Angeloff <stanimir@angeloff.name>
+" URL: https://github.com/StanAngeloff/php.vim
+"
+" Contributor: Alessandro Antonello <aleantonello@hotmail.com>
+" URL: https://github.com/aantonello/php.vim
+"
+" Contributor: Tim Carry <tim@pixelastic.com>
+" URL: https://github.com/pixelastic/php.vim
+"
 " Contributor: Joshua Sherman <josh@gravityblvd.com>
 " URL: https://github.com/joshtronic/php.vim
 "
@@ -338,10 +348,13 @@ syn keyword phpFunctions readgzfile gzrewind gzclose gzeof gzgetc gzgets gzgetss
 " === END BUILTIN FUNCTIONS, CLASSES, AND CONSTANTS =====================================
 
 " The following is needed afterall it seems.
-syntax keyword phpClasses containedin=ALLBUT,phpComment,phpStringDouble,phpStringSingle,phpIdentifier,phpMethodsVar
+syntax keyword phpClasses containedin=ALLBUT,phpComment,phpDocComment,phpStringDouble,phpStringSingle,phpIdentifier,phpMethodsVar
 
 " Control Structures
-syn keyword phpStatement if else elseif while do for foreach break switch case default continue return goto as endif endwhile endfor endforeach endswitch declare endeclare contained
+syn keyword phpKeyword if echo else elseif while do for foreach function break switch case default continue return goto as endif endwhile endfor endforeach endswitch declare endeclare print new clone yield contained
+
+" Exception Keywords
+syn keyword phpKeyword try catch finally throw contained
 
 " Class Keywords
 syn keyword phpType class abstract extends interface implements static final var public private protected const trait contained
@@ -349,14 +362,8 @@ syn keyword phpType class abstract extends interface implements static final var
 " Magic Methods
 syn keyword phpStatement __construct __destruct __call __callStatic __get __set __isset __unset __sleep __wakeup __toString __invoke __set_state __clone contained
 
-" Exception Keywords
-syn keyword phpStatement try catch finally throw contained
-
 " Language Constructs
-syn keyword phpStatement die exit eval empty isset unset list instanceof insteadof contained
-
-" These special keywords have traditionally received special colors
-syn keyword phpSpecial function echo print new clone contained
+syn keyword phpKeyword die exit eval empty isset unset list instanceof insteadof contained
 
 " Include & friends
 syn keyword phpInclude include include_once require require_once namespace use contained
@@ -377,10 +384,9 @@ syn match phpMemberSelector "->"  contained display
 syn match phpVarSelector    "\$"  contained display
 " highlight object variables inside strings
 syn match phpMethodsVar     "->\h\w*" contained contains=phpMethods,phpMemberSelector display containedin=phpStringDouble
-syn match phpClasses "\v[A-Za-z]+(::)@=" contained display
 
 " Identifier
-syn match  phpIdentifier         "$\h\w*"  contained contains=phpEnvVar,phpIntVar,phpVarSelector display
+syn match  phpIdentifier         "$\h\w*"  contained contains=phpSuperglobals,phpVarSelector display
 syn match  phpIdentifierSimply   "${\h\w*}"  contains=phpOperator,phpParent  contained display
 syn region phpIdentifierComplex  matchgroup=phpParent start="{\$"rs=e-1 end="}"  contains=phpIdentifier,phpMemberSelector,phpVarSelector,phpIdentifierArray contained extend
 syn region phpIdentifierArray    matchgroup=phpParent start="\[" end="]" contains=@phpClInside contained
@@ -406,6 +412,11 @@ syn match phpSpecialChar +\\"+   contained display
 syn match phpStrEsc      "\\\\"  contained display
 syn match phpStrEsc      "\\'"   contained display
 
+" Format specifiers (printf)
+" See https://github.com/aantonello/php.vim/commit/9d24eab4ea4b3752a54aebf14d3491b6d8edb6d8
+syn match phpSpecialChar display contained /%\(\d\+\$\)\=[-+' #0*]*\(\d*\|\*\|\*\d\+\$\)\(\.\(\d*\|\*\|\*\d\+\$\)\)\=\([aAbBdiouxXDOUfFeEgGcCsSpnmMyYhH]\|\[\^\=.[^]]*\]\)/ containedin=phpStringSingle,phpStringDouble,phpHereDoc
+syn match phpSpecialChar display contained /%%/ containedin=phpStringSingle,phpStringDouble,phpHereDoc
+
 " Error
 syn match phpOctalError "[89]"  contained display
 if exists("php_parent_error_close")
@@ -414,14 +425,32 @@ endif
 
 " Todo
 syn keyword phpTodo todo fixme xxx note contained
-syn match phpCommentSelector "\v\@(return|var|param)" contained
 
 " Comment
 if exists("php_parent_error_open")
-  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell
+  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,@Spell
 else
-  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell extend
+  syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,@Spell extend
 endif
+
+syn match phpCommentStar contained "^\s*\*[^/]"me=e-1
+syn match phpCommentStar contained "^\s*\*$"
+
+if !exists("php_ignore_phpdoc")
+  syn case ignore
+
+  syn region phpDocComment   start="/\*\*" end="\*/" keepend contains=phpCommentTitle,phpDocTags,phpTodo
+  syn region phpCommentTitle contained matchgroup=phpDocComment start="/\*\*" matchgroup=phpCommmentTitle keepend end="\.$" end="\.[ \t\r<&]"me=e-1 end="[^{]@"me=s-2,he=s-1 end="\*/"me=s-1,he=s-1 contains=phpCommentStar,phpTodo,phpDocTags containedin=phpComment
+
+  syn region phpDocTags  start="{@\(example\|id\|internal\|inheritdoc\|link\|source\|toc\|tutorial\)" end="}" containedin=phpComment
+  syn match  phpDocTags  "@\(abstract\|access\|author\|category\|copyright\|deprecated\|example\|final\|global\|ignore\|internal\|license\|link\|method\|name\|package\|param\|property\|return\|see\|since\|static\|staticvar\|subpackage\|todo\|tutorial\|uses\|var\|version\)\s\+\S\+.*" contains=phpDocParam containedin=phpComment
+  syn match  phpDocParam "\s\S\+" contains=phpDocIdentifier
+  syn match  phpDocIdentifier contained "$\h\w*"
+  syn match  phpDocTags  "@filesource" containedin=phpComment
+
+  syn case match
+endif
+
 if version >= 600
   syn match phpComment  "#.\{-}\(?>\|$\)\@="  contained contains=phpTodo,@Spell
   syn match phpComment  "//.\{-}\(?>\|$\)\@=" contained contains=phpTodo,@Spell
@@ -434,13 +463,13 @@ endif
 
 " String
 if exists("php_parent_error_open")
-  syn region phpStringDouble matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained keepend
-  syn region phpBacktick matchgroup=None start=+`+ skip=+\\\\\|\\"+ end=+`+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained keepend
-  syn region phpStringSingle matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+  contains=@Spell,@phpAddStrings,phpStrEsc contained keepend
+  syn region phpStringDouble matchgroup=phpStringDelimiter start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained keepend
+  syn region phpBacktick matchgroup=phpStringDelimiter start=+`+ skip=+\\\\\|\\"+ end=+`+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained keepend
+  syn region phpStringSingle matchgroup=phpStringDelimiter start=+'+ skip=+\\\\\|\\'+ end=+'+  contains=@Spell,@phpAddStrings,phpStrEsc contained keepend
 else
-  syn region phpStringDouble matchgroup=None start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained extend keepend
-  syn region phpBacktick matchgroup=None start=+`+ skip=+\\\\\|\\"+ end=+`+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained extend keepend
-  syn region phpStringSingle matchgroup=None start=+'+ skip=+\\\\\|\\'+ end=+'+  contains=@Spell,@phpAddStrings,phpStrEsc contained keepend extend
+  syn region phpStringDouble matchgroup=phpStringDelimiter start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained extend keepend
+  syn region phpBacktick matchgroup=phpStringDelimiter start=+`+ skip=+\\\\\|\\"+ end=+`+  contains=@Spell,@phpAddStrings,phpIdentifier,phpSpecialChar,phpIdentifierSimply,phpIdentifierComplex,phpStrEsc contained extend keepend
+  syn region phpStringSingle matchgroup=phpStringDelimiter start=+'+ skip=+\\\\\|\\'+ end=+'+  contains=@Spell,@phpAddStrings,phpStrEsc contained keepend extend
 endif
 
 " HereDoc
@@ -459,7 +488,7 @@ endif
 " Parent
 if exists("php_parent_error_close") || exists("php_parent_error_open")
   syn match  phpParent "[{}]"  contained
-  syn region phpParent matchgroup=Delimiter start="(" end=")"  contained contains=@phpClInside transparent
+  syn region phpParent matchgroup=Delimiter start="(" end=")"  contained contains=@phpClFunction transparent
   syn region phpParent matchgroup=Delimiter start="\[" end="\]"  contained contains=@phpClInside transparent
   if !exists("php_parent_error_close")
     syn match phpParent "[\])]" contained
@@ -469,9 +498,9 @@ else
 endif
 
 " Clusters
-syn cluster phpClConst contains=phpFunctions,phpClasses,phpIdentifier,phpStatement,phpOperator,phpStringSingle,phpStringDouble,phpBacktick,phpNumber,phpType,phpBoolean,phpStructure,phpMethodsVar,phpConstants,phpException,phpSuperglobals,phpMagicConstants,phpServerVars
-syn cluster phpClInside contains=@phpClConst,phpComment,phpParent,phpParentError,phpInclude,phpHereDoc,phpNowDoc
-syn cluster phpClFunction contains=@phpClInside,phpDefine,phpParentError,phpStorageClass,phpSpecial
+syn cluster phpClConst contains=phpFunctions,phpClasses,phpIdentifier,phpStatement,phpKeyword,phpOperator,phpStringSingle,phpStringDouble,phpBacktick,phpNumber,phpType,phpBoolean,phpStructure,phpMethodsVar,phpConstants,phpException,phpSuperglobals,phpMagicConstants,phpServerVars
+syn cluster phpClInside contains=@phpClConst,phpComment,phpDocComment,phpParent,phpParentError,phpInclude,phpHereDoc,phpNowDoc
+syn cluster phpClFunction contains=@phpClInside,phpDefine,phpParentError,phpStorageClass,phpKeyword
 syn cluster phpClTop contains=@phpClFunction,phpFoldFunction,phpFoldClass,phpFoldInterface,phpFoldTry,phpFoldCatch
 
 " Php Region
@@ -522,39 +551,45 @@ endif
 " For version 5.8 and later: only when an item doesn't have highlighting yet
 if !exists("did_php_syn_inits")
 
+  hi def link phpCommentTitle     SpecialComment
   hi def link phpComment          Comment
-  hi def link phpSuperglobals     Constant
+  hi def link phpDocComment       Comment
+  hi def link phpCommentStar      Comment
   hi def link phpMagicConstants   Constant
   hi def link phpServerVars       Constant
   hi def link phpConstants        Constant
-  hi def link phpBoolean          Constant
-  hi def link phpNumber           Constant
+  hi def link phpBoolean          Boolean
+  hi def link phpNumber           Number
   hi def link phpStringSingle     String
   hi def link phpStringDouble     String
   hi def link phpBacktick         String
+  hi def link phpStringDelimiter  String
   hi def link phpHereDoc          String
   hi def link phpNowDoc           String
-  hi def link phpFunctions        Identifier
-  hi def link phpClasses          Identifier
-  hi def link phpMethods          Identifier
+  hi def link phpFunctions        Function
+  hi def link phpMethods          Function
+  hi def link phpClasses          StorageClass
+  hi def link phpException        StorageClass
   hi def link phpIdentifier       Identifier
   hi def link phpIdentifierSimply Identifier
+  hi def link phpDocIdentifier    Identifier
   hi def link phpStatement        Statement
   hi def link phpStructure        Statement
-  hi def link phpException        Statement
   hi def link phpOperator         Operator
   hi def link phpVarSelector      Operator
-  hi def link phpCommentSelector  PreProc
   hi def link phpInclude          PreProc
   hi def link phpDefine           PreProc
-  hi def link phpSpecial          PreProc
-  hi def link phpFCKeyword        PreProc
+  hi def link phpKeyword          Keyword
+  hi def link phpFCKeyword        Keyword
+  hi def link phpSCKeyword        Keyword
+  hi def link phpSuperglobals     Type
   hi def link phpType             Type
-  hi def link phpSCKeyword        Type
-  hi def link phpMemberSelector   Type
-  hi def link phpSpecialChar      Special
-  hi def link phpStrEsc           Special
+  hi def link phpDocParam         Type
+  hi def link phpMemberSelector   Operator
+  hi def link phpDocTags          Special
   hi def link phpParent           Special
+  hi def link phpSpecialChar      SpecialChar
+  hi def link phpStrEsc           SpecialChar
   hi def link phpParentError      Error
   hi def link phpOctalError       Error
   hi def link phpTodo             Todo
