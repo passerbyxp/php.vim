@@ -23,6 +23,7 @@ Improvements
 - Basic support for PHP 5.4 syntax was added.
 - Support was added for PHP 5.5.7
 - New modules added: memcache, memcached, redis and xdebug
+- Support for static classes and docblock parameters (patched by @kris89)
 
   [html5]: https://github.com/othree/html5.vim
 
