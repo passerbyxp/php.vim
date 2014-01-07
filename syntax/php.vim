@@ -426,31 +426,13 @@ endif
 
 " Todo
 syn keyword phpTodo todo fixme xxx note contained
-syn match phpCommentSelector "\v\@(return|var|param)" contained
+syn match phpCommentSelector "\v\@(return|var|param|abstract|access|author|copyright|deprecated|example|global|ignore|internal|link|name|magic|package|see|since|static|staticvar|subpackage|todo|version)" contained
 
 " Comment
 if exists("php_parent_error_open")
   syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell
 else
   syn region phpComment start="/\*" end="\*/" contained contains=phpTodo,phpCommentSelector,@Spell extend
-endif
-
-syn match phpCommentStar contained "^\s*\*[^/]"me=e-1
-syn match phpCommentStar contained "^\s*\*$"
-
-if !exists("php_ignore_phpdoc")
-  syn case ignore
-
-  syn region phpDocComment   start="/\*\*" end="\*/" keepend contains=phpCommentTitle,phpDocTags,phpTodo
-  syn region phpCommentTitle contained matchgroup=phpDocComment start="/\*\*" matchgroup=phpCommmentTitle keepend end="\.$" end="\.[ \t\r<&]"me=e-1 end="[^{]@"me=s-2,he=s-1 end="\*/"me=s-1,he=s-1 contains=phpCommentStar,phpTodo,phpDocTags containedin=phpComment
-
-  syn region phpDocTags  start="{@\(example\|id\|internal\|inheritdoc\|link\|source\|toc\|tutorial\)" end="}" containedin=phpComment
-  syn match  phpDocTags  "@\(abstract\|access\|author\|category\|copyright\|deprecated\|example\|final\|global\|ignore\|internal\|license\|link\|method\|name\|package\|param\|property\|return\|see\|since\|static\|staticvar\|subpackage\|todo\|tutorial\|uses\|var\|version\)\s\+\S\+.*" contains=phpDocParam containedin=phpComment
-  syn match  phpDocParam "\s\S\+" contains=phpDocIdentifier
-  syn match  phpDocIdentifier contained "$\h\w*"
-  syn match  phpDocTags  "@filesource" containedin=phpComment
-
-  syn case match
 endif
 
 if version >= 600
