@@ -4,7 +4,12 @@ php.vim
 This project is a fork of [php.vim][StanAngeloff] which is an improved version
 of [php.vim--Garvin][garvin] which in turn is an update of the
 [php.vim][php-vim] script which in turn is an updated version of the php.vim
-syntax file distributed with Vim. FUCKIN’ A!
+syntax file distributed with Vim.
+
+The point of this fork is to embrace the latest and greatest PHP has to offer
+and constantly update against the latest PHP release.
+
+Last updated against **5.5.8**
 
   [StanAngeloff]: https://github.com/StanAngeloff/php.vim
   [garvin]:  https://github.com/vim-scripts/php.vim--Garvin
@@ -22,7 +27,7 @@ Improvements
 - Support for not-so-common extensions was turned off, e.g., `mssql_*`.
 - Basic support for PHP 5.4 syntax was added.
 - Support was added for PHP 5.5.7
-- New modules added: memcache, memcached, redis and xdebug
+- New modules added: memcache, memcached, redis, test_helpers and xdebug
 - Support for static classes and docblock parameters (patched by @kris89)
 
   [html5]: https://github.com/othree/html5.vim
