@@ -157,7 +157,7 @@ syn match phpMemberSelector "->"  contained display
 syn match phpVarSelector    "\$"  contained display
 " highlight object variables inside strings
 syn match phpMethodsVar     "->\h\w*" contained contains=phpMethods,phpMemberSelector display containedin=phpStringDouble
-syn match phpClasses        "\v[A-Za-z]+(::)@=" contained display
+syn match phpClasses        "\v\h\w+(::)@=" contained display
 
 " Identifier
 syn match  phpIdentifier         "$\h\w*"  contained contains=phpSuperglobals,phpVarSelector display
