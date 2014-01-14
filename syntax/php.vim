@@ -324,6 +324,8 @@ syn keyword phpClasses __PHP_Incomplete_Class php_user_filter Directory containe
 
 " tokenizer
 syn keyword phpFunctions token_get_all token_name contained
+" test_helpers
+syn keyword phpFunctions unset_new_overload set_new_overload unset_exit_overload set_exit_overload rename_method rename_function contained
 " wddx
 syn keyword phpFunctions wddx_serialize_value wddx_serialize_vars wddx_packet_start wddx_packet_end wddx_add_vars wddx_deserialize contained
 " xdebug

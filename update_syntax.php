@@ -95,6 +95,7 @@ $allowed_extensions = array(
 	'sqlite3',
 	'standard',
 	'tokenizer',
+	'test_helpers',
 	'wddx',
 	'xdebug',
 	'xml',
