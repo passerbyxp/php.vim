@@ -525,7 +525,7 @@ endif
 
 " Todo
 syn keyword phpTodo todo fixme xxx note contained
-syn match phpCommentSelector "\v\@(return|var|param|abstract|access|author|copyright|deprecated|example|global|ignore|internal|link|name|magic|package|see|since|static|staticvar|subpackage|todo|version|usage)" contained
+syn match phpCommentSelector "\v\@(return|var|param|abstract|access|author|copyright|deprecated|example|global|ignore|internal|link|name|magic|package|see|since|static|staticvar|subpackage|todo|version|usage|license)" contained
 
 " Comment
 if exists("php_parent_error_open")
