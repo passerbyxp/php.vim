@@ -10,6 +10,7 @@
  *
  * @author Stan Angeloff <stanimir@angeloff.name>
  * @author Joshua Sherman <josh@gravityblvd.com>
+ * @author Passerby <passerbyxp@gmail.com>
  */
 
 /**
@@ -30,89 +31,14 @@
  * itself. The pdo_* extensions must still be enabled (compiled in or loaded as
  * shared) for these constants to show up.
  */
-$allowed_extensions = [
-	'bcmath',
-	'bz2',
-	'calendar',
-	// 'com_dotnet',
-	'core',
-	'ctype',
-	'curl',
-	'date',
-	'dba',
-	'dom',
-	// 'enchant',
-	'ereg',
-	'exif',
-	'fileinfo',
-	'filter',
-	'ftp',
-	'gd',
-	'gettext',
-	// 'gmp',
-	'hash',
-	'iconv',
-	// 'imap',
-	// 'interbase',
-	'intl',
-	'json',
-	'ldap',
-	'libxml',
-	'mbstring',
-	'mcrypt',
-	'memcache',
-	'memcached',
-	'mhash',
-	// 'mssql',
-	'mysql',
-	'mysqli',
-	// 'oci8',
-	// 'oci8_11g',
-	'odbc',
-	'openssl',
-	'pcre',
-	'pdo',
-	'pgsql',
-	'phar',
-	'pcntl',
-	'posix',
-	'pspell',
-	'readline',
-	// 'recode',
-	'redis',
-	'reflection',
-	'session',
-	'shmop',
-	'simplexml',
-	'snmp',
-	'soap',
-	'sockets',
-	'spl',
-	// 'sqlite',
-	'sqlite3',
-	'standard',
-	// 'sybase_ct',
-	'sysvmsg',
-	'sysvsem',
-	'sysvshm',
-	// 'tidy',
-	'tokenizer',
-	'test_helpers',
-	'wddx',
-	'xdebug',
-	'xml',
-	'xmlreader',
-	'xmlrpc',
-	'xmlwriter',
-	'xsl',
-	'zip',
-	'zlib',
-];
+$extensions = get_loaded_extensions();
+sort($extensions,SORT_STRING | SORT_FLAG_CASE);
 
 $processed = [];
 
-foreach ($allowed_extensions as $extension)
+foreach ($extensions as $extension)
 {
+	//if(!extension_loaded($extension)) continue;
 	try
 	{
 		$details = [];
