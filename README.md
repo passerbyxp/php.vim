@@ -1,16 +1,10 @@
 php.vim
 =======
 
-This project is a fork of [php.vim][StanAngeloff] which is an improved version
-of [php.vim--Garvin][garvin] which in turn is an update of the
-[php.vim][php-vim] script which in turn is an updated version of the php.vim
-syntax file distributed with Vim.
+This project is a fork of [php.vim][kristijanhusak] which is a fork of [php.vim][StanAngeloff] which is an improved version
+of [php.vim--Garvin][garvin] which in turn is an update of the [php.vim][php-vim] script which in turn is an updated version of the php.vim syntax file distributed with Vim.
 
-The point of this fork is to embrace the latest and greatest PHP has to offer
-and constantly update against the latest PHP release.
-
-Last updated against **5.5.8**
-
+  [kristijanhusak]: https://github.com/kristijanhusak/php.vim
   [StanAngeloff]: https://github.com/StanAngeloff/php.vim
   [garvin]:  https://github.com/vim-scripts/php.vim--Garvin
   [php-vim]: http://www.vim.org/scripts/script.php?script_id=2874
@@ -18,28 +12,16 @@ Last updated against **5.5.8**
 Improvements
 ------------
 
-- Spell checking was enabled in strings and comments (both single and
-  multi-line).
-- Spell checking was enabled in heredocs, e.g., `<<<EOD`.
-- The PHP built-in and extension-provided functions list was updated for
-  PHP 5.3.
-- Compatibility with [html5.vim][html5].
-- Support for not-so-common extensions was turned off, e.g., `mssql_*`.
-- Basic support for PHP 5.4 syntax was added.
-- Support was added for PHP 5.5.7
-- New modules added: memcache, memcached, redis, test_helpers and xdebug
-- Support for static classes and docblock parameters (patched by @kris89)
-
-  [html5]: https://github.com/othree/html5.vim
+- Modified the `update_syntax.php` so that it always reflect your current extensions, instead of having to check and hand-writing extensions on and off.
 
 Customising
 -----------
 
 A script `update_syntax.php` is provided to re-generate the syntax file.
-A single variable `$allowed_extensions` can be customised to
-[turn on/off][defaults] certain extensions.
+~A single variable `$allowed_extensions` can be customised to~
+~[turn on/off][defaults] certain extensions.~
 
-When re-generating the syntax file, you must have allowed extensions installed.
+~When re-generating the syntax file, you must have allowed extensions installed.~
 
   [defaults]: https://github.com/StanAngeloff/php.vim/blob/master/update_syntax.php#L29-L101
 
