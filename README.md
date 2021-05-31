@@ -17,13 +17,18 @@ Improvements
 Customising
 -----------
 
-A script `update_syntax.php` is provided to re-generate the syntax file.
+A script `update_syntax.php` is provided to re-generate the syntax file.  
 ~A single variable `$allowed_extensions` can be customised to~
 ~[turn on/off][defaults] certain extensions.~
 
 ~When re-generating the syntax file, you must have allowed extensions installed.~
 
   [defaults]: https://github.com/StanAngeloff/php.vim/blob/master/update_syntax.php#L29-L101
+
+Update 2021-05-13
+-----------------
+
+- Removed generated syntax file (to avoid conflict with your own generated file)
 
 ### Original README
 
